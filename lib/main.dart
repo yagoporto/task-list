@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasklist/pages/to_list_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -9,19 +10,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: const ToDoListPage(),
+    return MaterialApp(
+      home:  ToDoListPage(),
     );
   }
 }
 
-class ToDoListPage extends StatelessWidget {
-  const ToDoListPage({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white38,
-    );
-  }
-}
