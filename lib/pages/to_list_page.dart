@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tasklist/models/task.dart';
-import 'package:tasklist/pages/to_list_page.dart';
 import 'package:tasklist/widgets/task_list_item.dart';
 
 class ToDoListPage extends StatefulWidget {
@@ -14,6 +13,10 @@ class _ToDoListPageState extends State<ToDoListPage> {
 
   final TextEditingController taskController = TextEditingController();
   List<Task> tasks = [];
+  Task? deletedTask;
+  int? deletedTaskPos;
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -47,7 +50,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
                       tasks.add(newTask);
                       });
                       taskController.clear();
-                    },
+                    }, 
                     style: ElevatedButton.styleFrom(
                       
                     ),
@@ -65,7 +68,8 @@ class _ToDoListPageState extends State<ToDoListPage> {
                   children: [
                     for(Task task in tasks)
                       TaskListItem(
-                        task:task
+                        task:task,
+                        onDelete: onDelete,
                         ),
                   ],
                 ),
@@ -93,6 +97,33 @@ class _ToDoListPageState extends State<ToDoListPage> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  void onDelete(Task task){
+
+    deletedTask = task;
+    deletedTaskPos = tasks.indexOf(task);
+
+    setState(() {
+      // ignore: collection_methods_unrelated_type
+      tasks.remove(task);
+    });
+
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: 
+      Text('Tareda ${task.title} foi removida com sucesso!'),
+      action: SnackBarAction(
+        label: 'Desfazer',
+        onPressed: (){
+          setState(() {
+            tasks.insert(deletedTaskPos!, deletedTask!);
+          });
+        },
+        ),
+        duration: const Duration(seconds: 5),
       ),
     );
   }
